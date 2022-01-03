@@ -44,7 +44,7 @@ class TestSlack(unittest.TestCase):
                             "type": "section",
                             "text": {
                                 "type": "mrkdwn",
-                                "text": "*Total Price:* 1.42 USD"
+                                "text": "Daily cost of 2021/12/01: 1.42 USD"
                             }
                         },
                         {

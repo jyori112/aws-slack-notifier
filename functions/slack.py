@@ -31,7 +31,7 @@ class Slack:
                             "type": "section",
                             "text": {
                                 "type": "mrkdwn",
-                                "text": f"*Total Price:* {total_price:.2f} USD"
+                                "text": f"Daily cost of {report.date.strftime('%Y/%m/%d')}: {total_price:.2f} USD"
                             }
                         },
                         {
