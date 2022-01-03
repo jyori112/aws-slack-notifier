@@ -34,11 +34,33 @@ class TestSlack(unittest.TestCase):
             slack.post_daily_report(DailyReport(date=date(2021, 12, 1), costs={"AWS Secrets Manager": 1.42}))
 
         payload = {
-            'attachments': [
+            "username": "AWS Cost Notification",
+            "icon_emoji": ":aws:",
+            "attachments": [
                 {
-                    'color': '#36a64f',
-                    'pretext': '2021/12/01の請求額は、1.42 USDです。',
-                    'text': 'AWS Secrets Manager: 1.42 USD'
+                    "color": "#36a64f",
+                    "blocks": [
+                        {
+                            "type": "section",
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "*Total Price:* 1.42 USD"
+                            }
+                        },
+                        {
+                            "type": "section",
+                            "fields": [
+                                {
+                                    "type": "mrkdwn",
+                                    "text": "*Service:*\nAWS Secrets Manager:"
+                                },
+                                {
+                                    "type": "mrkdwn",
+                                    "text": "*Cost:*\n1.42 USD"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

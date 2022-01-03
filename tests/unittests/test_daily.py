@@ -17,15 +17,38 @@ class TestDaily(unittest.TestCase):
                     "time": "2021-12-02T09:00:00Z"
                 }, {})
 
-        post.assert_called_once_with({
-            'attachments': [
+        payload = {
+            "username": "AWS Cost Notification",
+            "icon_emoji": ":aws:",
+            "attachments": [
                 {
-                    'color': '#36a64f',
-                    'pretext': '2021/12/01の請求額は、1.42 USDです。',
-                    'text': 'AWS Secrets Manager: 1.42 USD'
+                    "color": "#36a64f",
+                    "blocks": [
+                        {
+                            "type": "section",
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "*Total Price:* 1.42 USD"
+                            }
+                        },
+                        {
+                            "type": "section",
+                            "fields": [
+                                {
+                                    "type": "mrkdwn",
+                                    "text": "*Service:*\nAWS Secrets Manager:"
+                                },
+                                {
+                                    "type": "mrkdwn",
+                                    "text": "*Cost:*\n1.42 USD"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
-        })
+        }
+        post.assert_called_once_with(payload)
 
         report.assert_called_once_with(DatetimeRange(start=date(2021, 12, 1),
                                                      end=date(2021, 12, 2)))
@@ -38,12 +61,35 @@ class TestDaily(unittest.TestCase):
                     "time": "2021-12-02T09:00:00Z"
                 }, {})
 
-        post.assert_called_once_with({
-            'attachments': [
+        payload = {
+            "username": "AWS Cost Notification",
+            "icon_emoji": ":aws:",
+            "attachments": [
                 {
-                    'color': '#36a64f',
-                    'pretext': '2021/12/01の請求額は、1.92 USDです。',
-                    'text': 'AWS Secrets Manager: 1.42 USD\nEC2: 0.50 USD'
+                    "color": "#36a64f",
+                    "blocks": [
+                        {
+                            "type": "section",
+                            "text": {
+                                "type": "mrkdwn",
+                                "text": "*Total Price:* 1.92 USD"
+                            }
+                        },
+                        {
+                            "type": "section",
+                            "fields": [
+                                {
+                                    "type": "mrkdwn",
+                                    "text": "*Service:*\nAWS Secrets Manager:\nEC2:"
+                                },
+                                {
+                                    "type": "mrkdwn",
+                                    "text": "*Cost:*\n1.42 USD\n0.50 USD"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
-        })
+        }
+        post.assert_called_once_with(payload)
