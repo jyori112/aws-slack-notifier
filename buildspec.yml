@@ -6,6 +6,7 @@ phases:
       nodejs: 12.x
     commands:
       - npm install -g serverless
+      - sls plugin install -n serverless-python-requirements
   build:
     commands:
       - sls deploy
