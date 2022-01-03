@@ -8,10 +8,17 @@ provider:
   lambdaHashingVersion: 20201221
 
 functions:
-  notify_bill:
-    handler: functions/notify_bill.main
+  notify_bill_daily:
+    handler: functions/notify_bill.daily
     environment:
       SECRETS_MANAGER_ID: !Ref SecretsManager
+  notify_bill_monthly:
+    handler: functions/notify_bill.monthly
+    environment:
+      SECRETS_MANAGER_ID: !Ref SecretsManager
+    events:
+      schedule:
+        - cron(0 9 * * *)
 
 resources:
   Resources:
