@@ -7,12 +7,8 @@ from functions.credential import Credential, get_secrets
 
 
 class TestDailyReport(unittest.TestCase):
-    @patch('functions.credential.get_secrets')
+    @patch('functions.credential.get_secrets', return_value={"SLACK_WEBHOOK_URL": os.environ["SLACK_WEBHOOK_URL"]})
     def test_daily_report(self, mock):
-        mock.return_value = {
-            "SLACK_WEBHOOK_URL": os.environ["SLACK_WEBHOOK_URL"]
-        }
-
         notify_bill.daily({
             "time": "2021-12-01T09:00:00Z"
         }, {})

@@ -1,16 +1,15 @@
 import os
 import unittest
 from unittest.mock import MagicMock, patch
-from datetime import datetime
+from datetime import date
 
 import boto3
 
 from functions.cost_explorer import CostExplorer
-from functions.datetime_range import DatetimeRange
-
 
 class TestCostExplorer(unittest.TestCase):
-    def test_post(self):
+    @patch('functions.credential.get_secrets', return_value={"SLACK_WEBHOOK_URL": os.environ["SLACK_WEBHOOK_URL"]})
+    def test_daily_report(self, mock):
         client = boto3.client('ce', region_name=os.environ["AWS_REGION"])
         ce = CostExplorer(client)
 
@@ -27,13 +26,13 @@ class TestCostExplorer(unittest.TestCase):
             }]
         })
 
-        report = ce.report(DatetimeRange(start=datetime(2021, 12, 1, 0, 0, 0),
-                                         end=datetime(2021, 12, 2, 0, 0, 0)))
-
+        report = ce.daily_report(date=date(2021, 12, 1))
 
         client.get_cost_and_usage.assert_called_with(TimePeriod={"Start": "2021-12-01", "End": "2021-12-02"},
                                                      Granularity="MONTHLY",
                                                      Metrics=["AmortizedCost"],
                                                      GroupBy=[{ 'Type': "DIMENSION", "Key": "SERVICE"}])
-        self.assertEqual(report, {"AWS Secrets Manager": 1.42})
+
+        self.assertEqual(report.date, date(2021, 12, 1))
+        self.assertEqual(report.costs, {"AWS Secrets Manager": 1.42})
 
