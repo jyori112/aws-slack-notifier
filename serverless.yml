@@ -10,6 +10,12 @@ provider:
 functions:
   notify_bill:
     handler: functions/notify_bill.main
+    environment:
+      SECRETS_MANAGER_ID: !Ref SecretsManager
+
+resources:
+  Resources:
+    SecretsManager: ${file(./cfn/resources/Secret.yml)}
 
 plugins:
   - serverless-python-requirements
